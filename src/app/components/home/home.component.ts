@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators'
-
+import { map, take } from 'rxjs/operators'
+import { PostService } from 'src/app/services/post.service';
 import { Post } from './post.model';
+
 
 @Component({
   selector: 'app-home',
@@ -11,45 +12,39 @@ import { Post } from './post.model';
 })
 export class HomeComponent implements OnInit {
 
-  // loadedPosts : Post[] = [];
+  loadedPosts : Post[] = [];
 
-  // constructor(public httpclient: HttpClient) { }
+  constructor(private httpclient: HttpClient, private postService: PostService) {
+  }
 
   ngOnInit(): void {
-    // this.fetchPosts();
+    this.getPosts();
+  }
+
+  createPost(){
+    const body = {
+      description: 'rjgvjhbsbkdhvbsojdl',
+      imageUrl: 'https://www.facebook.com/images/fb_icon_325x325.png',
+      noComment: true
+    }
+    this.postService.createPosts(body).pipe(take(1)).subscribe(res => {
+      console.log(res);
+      this.getPosts();
+    })
+  }
+
+  getPosts(){
+    this.postService.getPosts().pipe(take(1)).subscribe(res => {
+      this.loadedPosts= res.data.list.reverse();
+    })
+  }
+
+  deletePost(id: number){
+    this.postService.deletePosts(id).pipe(take(1)).subscribe(res => {
+      console.log(res);
+      this.getPosts();
+    })
   }
 
 
-
-  // onCreatePosts(postData : {tittle: string, content:string }){
-  //   this.httpclient
-  //     .post{
-  //       '.', postData
-  //     }
-  //     .subscribe(responseData =>{
-  //     console.log(responseData);
-  //   });
-  // }
-
-  // onFetchPosts (){
-  //   this.fetchPosts();
-  // }
-
-
-  // private fetchPosts (){
-  //   this.httpclient
-  //     .get<{ [key : string]: Post}>('.json')
-  //     .pipe(
-  //       map ( responseData => {
-  //         const postsArray : Post[] = [];
-  //         for (const key in responseData){
-  //         postsArray.push({...responseData[key] , id:  key});
-  //       }
-  //       return postsArray;
-  //     }))
-  //     .subscribe(posts =>{
-  //         this.loadedPosts = posts;
-  //   });
-  // }
-
-}
+  }

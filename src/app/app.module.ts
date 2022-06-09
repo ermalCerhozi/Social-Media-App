@@ -14,9 +14,12 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { MaterialModule } from './module/module.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PostDialogComponent } from './components/post-dialog/post-dialog.component';
+
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ProfileComponent, AboutComponent, HelpComponent, NotFoundComponent, LoginComponent, SignupComponent],
+  entryComponents: [ PostDialogComponent ],
   imports: [
     BrowserModule,
     AppRoutingModule,

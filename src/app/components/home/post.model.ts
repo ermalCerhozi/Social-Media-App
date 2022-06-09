@@ -1,6 +1,6 @@
-
-export interface Post{
-    tittle: string;
-    content: string;
-    id?: string; //optional
+export interface Post {
+  id: number;
+  imageUrl: string;
+  description: string;
+  noComment: true;
 }

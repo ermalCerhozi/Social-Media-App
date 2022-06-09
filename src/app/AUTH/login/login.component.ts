@@ -1,5 +1,6 @@
 import { Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -16,8 +17,7 @@ export class LoginComponent implements OnInit {
   signInForm: FormGroup = new FormGroup({});
   errorMessage: string = '';
 
-  constructor(private authService: AuthService) {
-    // constructor(private fb: FormBuilder) {
+  constructor(private authService: AuthService, private router: Router) {
     this.email = '';
     this.password = '';
   }
@@ -30,7 +30,6 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
-    console.log(this.signInForm.value);
     this.authService
       .signIn({
         email: this.signInForm.value.email,
@@ -38,7 +37,11 @@ export class LoginComponent implements OnInit {
       })
       .pipe(
         tap(
-          (res) => {},
+          (res) => {
+            localStorage.setItem('token', res.data.token);
+            localStorage.setItem('role', res.data.role);
+            this.router.navigate(['']);
+          },
           (error) => {
             const errorList = error.error.message;
             this.errorMessage = errorList;
@@ -46,7 +49,7 @@ export class LoginComponent implements OnInit {
         )
       )
       .subscribe();
-  } // loginForm.resetForm();
+  }
 
 }
 

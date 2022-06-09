@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
-
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 interface ResponseModel<MODEL> {
   data: MODEL;
@@ -24,15 +23,13 @@ interface AuthModel {
   password: string;
 }
 
-interface SignUpModel extends AuthModel{
+interface SignUpModel extends AuthModel {
   firstName: string;
   lastName: string;
 }
 
-
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   [x: string]: any;
@@ -45,15 +42,11 @@ export class AuthService {
 
   signIn(authModel: AuthModel): Observable<ResponseModel<UserModel>> {
     return this.httpClient
-      .post<ResponseModel<UserModel>>(this.url+'/signIn', authModel)
-      .pipe
-      (tap(res => localStorage.setItem('token', res.data.token)));
+      .post<ResponseModel<UserModel>>(this.url + '/signIn', authModel);
   }
 
   signUp(signUpModel: SignUpModel): Observable<ResponseModel<UserModel>> {
-      return this.httpClient.post<ResponseModel<UserModel>>(this.url+'/signUp', signUpModel)
-      .pipe
-      (tap(res => localStorage.setItem('token', res.data.token)));
+    return this.httpClient
+      .post<ResponseModel<UserModel>>(this.url + '/signUp', signUpModel);
   }
-
 }

@@ -7,16 +7,16 @@ import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { AuthGuardGuard } from './services/guards/auth-guard.guard';
+
 
 const routes: Routes = [
   {
     path: '',
-    pathMatch: 'full',
-    redirectTo: '',
-  },
-  {
-    path: 'home',
     component: HomeComponent,
+    canActivate: [
+      AuthGuardGuard
+    ],
   },
   {
     path: 'login',
@@ -29,27 +29,30 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    // children:[
-    //   {
-    //     path: '',
-    //     Component: '',
-    //     data:{
-          
-    //     }
-    //   }
-    // ]
+    canActivate: [
+      AuthGuardGuard
+    ],
   },
   {
     path: 'about',
     component: AboutComponent,
+    canActivate: [
+      AuthGuardGuard
+    ],
   },
   {
     path: 'help',
     component: HelpComponent,
+    canActivate: [
+      AuthGuardGuard
+    ],
   },
   {
     path: '**',
     component: NotFoundComponent,
+    canActivate: [
+      AuthGuardGuard
+    ],
   },
 ];
 @NgModule({

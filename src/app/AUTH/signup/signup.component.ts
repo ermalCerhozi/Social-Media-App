@@ -1,17 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.css']
+  styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-
   signUpForm: FormGroup = new FormGroup({});
-  // secondSignUpForm: FormGroup = new FormGroup({}); 
   hide: boolean = true;
   errorMessage = '';
   firstName: string;
@@ -19,7 +23,7 @@ export class SignupComponent implements OnInit {
   email: string;
   password: string;
 
-  constructor( private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
     this.firstName = '';
     this.lastName = '';
     this.email = '';
@@ -27,18 +31,15 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.signUpForm = new FormGroup({
-      firstName: new FormControl(null),
-      lastName: new FormControl(null),
-      email: new FormControl(null),
-      password: new FormControl(null),
+      firstName: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required),
+      email: new FormControl(null, Validators.required),
+      password: new FormControl(null, Validators.required),
     });
-
   }
 
   signUp() {
-    console.log(this.signUpForm.value);
     this.authService
       .signUp({
         firstName: this.signUpForm.value.firstName,
@@ -48,12 +49,16 @@ export class SignupComponent implements OnInit {
       })
       .pipe(
         tap(
-          (_res) => {},
+          (res) => { 
+            localStorage.setItem('token', res.data.token)
+            localStorage.setItem('role', res.data.role);
+            this.router.navigate(['']);
+          },
           (error) => {
             console.log(error.error.message);
-            this.errorMessage =  error.error.message;
+            this.errorMessage = error.error.message;
           }
-          )
+        )
       )
       .subscribe();
   }
