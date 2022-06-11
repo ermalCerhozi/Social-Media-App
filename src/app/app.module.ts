@@ -15,11 +15,14 @@ import { MaterialModule } from './module/module.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PostDialogComponent } from './components/post-dialog/post-dialog.component';
+import { UpdatePostsComponent } from './components/home/edit-post/edit-posts.component';
+import { CommentsListComponent } from './components/home/comments-list/comments-list.component';
+import { LikesListComponent } from './components/home/likes-list/likes-list.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ProfileComponent, AboutComponent, HelpComponent, NotFoundComponent, LoginComponent, SignupComponent],
-  entryComponents: [ PostDialogComponent ],
+  declarations: [AppComponent, HomeComponent, ProfileComponent, AboutComponent, HelpComponent, NotFoundComponent, LoginComponent, SignupComponent, UpdatePostsComponent, CommentsListComponent, LikesListComponent],
+  entryComponents: [ UpdatePostsComponent, CommentsListComponent, LikesListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

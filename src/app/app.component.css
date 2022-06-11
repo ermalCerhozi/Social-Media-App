@@ -13,13 +13,14 @@ mat-sidenav {
     text-align: center;
 }
 .content {
-    height: calc(100vh - 130px);
+    height: calc(100% - 35px);
     border-radius: 10px;
     margin: 16px;
     margin-left: 32px;
     padding: 16px;
     overflow: auto;
 }
+
 mat-sidenav-container {
     height: calc(100vh - 65px);
 }
@@ -28,8 +29,9 @@ mat-sidenav-container {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 1rem;
+    font-size: 20px;
 }
+
 .menu-button mat-icon {
     margin-right: 8px;
 }

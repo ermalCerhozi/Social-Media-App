@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface ResponseModel<MODEL> {
   data: MODEL;
@@ -32,11 +32,11 @@ interface SignUpModel extends AuthModel {
   providedIn: 'root',
 })
 export class AuthService {
-  [x: string]: any;
+  // [x: string]: any;
 
   private url: string;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     this.url = environment.baseUrl + '/auth';
   }
 
