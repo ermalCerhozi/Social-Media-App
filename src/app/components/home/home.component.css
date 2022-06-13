@@ -32,3 +32,15 @@
 .button{
   color: red;
 }
+
+.blue {
+  color: blue;
+}
+
+.virtualScroll{
+  height: 480px;
+}
+
+.posts{
+  width: 95%;
+}

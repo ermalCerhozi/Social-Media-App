@@ -60,6 +60,9 @@ export class SignupComponent implements OnInit {
           }
         )
       )
-      .subscribe();
+      .subscribe((res) =>{
+        localStorage.setItem('user', JSON.stringify(res.data))
+        this.router.navigate(['']);
+       });
   }
 }

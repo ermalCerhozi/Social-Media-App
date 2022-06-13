@@ -56,8 +56,10 @@
             formControlName="password"
             name="password"
             required
+            minlength="6"
           />
           <mat-error> Password is <strong>required</strong> </mat-error>
+          <mat-error> Password must be at least <strong>6 caracters</strong> </mat-error>
           <button
             type="button"
             mat-icon-button
@@ -72,9 +74,9 @@
 
         <button mat-flat-button color="primary" type="submit">Submit</button>
         <div class="not-registered">
-          <p>Not registered yet?</p>
+          <p>Already have an account?</p>
           <br />
-          <a class="create-account" href="signup"> Create an account</a>
+          <a class="have-account" href="login">Go to login.</a>
         </div>
       </form>
     </mat-card-content>

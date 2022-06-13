@@ -1,7 +1,11 @@
-<ul class="list-group">
-  <ng-container *ngIf="loadedComments.length">
-    <li *ngFor="let commnet of loadedComments" class="list-group-item">
-      <!-- {{comment}} -->
-    </li>
-  </ng-container>
-</ul>
+<div class="row">
+  <div class="col-xs12 col-md6 col-md-offset-3">
+    <p *ngIf="loadedComments.length < 1">NO COMMENTS</p>
+    <ul class="list-group" *ngIf="loadedComments.length >=1">
+        <li *ngFor="let comment of loadedComments" class="list-group-item">
+          <p>{{comment.comment}}</p>
+          <button mat-button mat-dialog-close mat-dialog-close="false" (click)="deleteComment(comment.id)">	<mat-icon>delete</mat-icon>delete</button>
+        </li>
+    </ul>
+  </div>
+</div>

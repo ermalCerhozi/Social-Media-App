@@ -1,14 +1,24 @@
 <h2 mat-dialog-title>Edit Post</h2>
-<mat-dialog-content>
+<mat-dialog-content style="width: 100%;">
     <div>
         <form [formGroup]="postForm">
-            <div class="my-2">
-                <input placeholder="description" type="text" class="form-control" formControlName="description">
+            <div>
+                <mat-form-field class="inputs">
+                    <mat-label>firstName</mat-label>
+                    <input type="text" matInput disabled [value]="data.user.firstName + ' ' + data.user.lastName">
+                </mat-form-field>
             </div>
+                <mat-form-field class="inputs">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput placeholder="Description..." class="form-control" [value]="data.description"></textarea>
+                    <mat-error>
+                        Description is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
         </form>
     </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-    <button mat-button mat-dialog-close mat-dialog-close="false">Back</button>
-    <button mat-button mat-dialog-close mat-dialog-close="true">Save changes</button>
+    <button mat-button mat-dialog-close mat-dialog-close="false">	<mat-icon>undo</mat-icon>Back</button>
+    <button mat-button mat-dialog-close mat-dialog-close="true"><mat-icon>save_alt</mat-icon>Save changes</button>
 </mat-dialog-actions>

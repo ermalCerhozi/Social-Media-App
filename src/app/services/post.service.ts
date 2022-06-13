@@ -1,17 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { modelPosts } from './models/postsModels';
+import { Post, postPatch } from './models/post.model';
+import { ModelPosts } from './models/postsModels';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  url = environment.baseUrl;
+  url = environment.baseUrl+'/post';
 
   httpHeaders = new HttpHeaders().set(
     'authorization',
-    localStorage.getItem('token')!
+    JSON.parse(localStorage.getItem('user')!).token
   );
   // .set('Content-Type', 'application/json');
 
@@ -22,28 +23,27 @@ export class PostService {
     imageUrl: string;
     noComment: boolean;
   }) {
-    return this.httpClient.post(this.url + '/post', postData, {
+    return this.httpClient.post(this.url, postData, {
       headers: this.httpHeaders,
     });
   }
 
   getPosts() {
-    return this.httpClient.get<modelPosts>(this.url + '/post', {
+    return this.httpClient.get<ModelPosts>(this.url, {
       headers: this.httpHeaders,
     });
   }
 
   deletePosts(id: number) {
-    return this.httpClient.delete<modelPosts>(this.url + `/post/${id}`, {
+    return this.httpClient.delete<ModelPosts>(this.url + `/${id}`, {
       headers: this.httpHeaders,
     });
   }
 
-  editPosts(id: number) {
-    return this.httpClient.put<modelPosts>(
-      this.url + `/post/${`id, imageUrl, description, noComment, comments`}`,
-      { headers: this.httpHeaders }
-    );
+  editPosts(id: number, description: string) {
+    return this.httpClient.put<Post>(
+      this.url + `/${id}`, description, { headers: this.httpHeaders }
+    ); 
   }
 
 }

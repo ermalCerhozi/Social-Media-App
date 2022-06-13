@@ -12,7 +12,7 @@ export class AuthGuardGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean {
-      if(localStorage.getItem('token')){
+      if(localStorage.getItem('user')){
         return true;
       }
       else{

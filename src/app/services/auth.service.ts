@@ -43,7 +43,7 @@ export class AuthService {
   signIn(authModel: AuthModel): Observable<ResponseModel<UserModel>> {
     return this.httpClient
       .post<ResponseModel<UserModel>>(this.url + '/signIn', authModel);
-  }
+  } 
 
   signUp(signUpModel: SignUpModel): Observable<ResponseModel<UserModel>> {
     return this.httpClient

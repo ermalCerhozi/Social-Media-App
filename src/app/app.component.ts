@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { user } from './services/models/comments.model';
 
 @Component({
   selector: 'app-root',
@@ -9,13 +10,6 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'BlogProject';
 
-  constructor(private router: Router){
+  constructor(private router: Router){}
 
-  }
-
-  Logout(){
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
-    this.router.navigate(['/login'])
-  }
 }
