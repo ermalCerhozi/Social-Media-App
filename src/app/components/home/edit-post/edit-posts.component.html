@@ -1,24 +1,48 @@
-<h2 mat-dialog-title>Edit Post</h2>
-<mat-dialog-content style="width: 100%;">
-    <div>
-        <form [formGroup]="postForm">
-            <div>
-                <mat-form-field class="inputs">
-                    <mat-label>firstName</mat-label>
-                    <input type="text" matInput disabled [value]="data.user.firstName + ' ' + data.user.lastName">
-                </mat-form-field>
-            </div>
-                <mat-form-field class="inputs">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput placeholder="Description..." class="form-control" [value]="data.description"></textarea>
-                    <mat-error>
-                        Description is <strong>required</strong>
-                    </mat-error>
-                </mat-form-field>
-        </form>
-    </div>
+<!-- <h2 mat-dialog-title>Edit Post</h2>
+<mat-dialog-content style="width: 100%">
+  <div>
+    <mat-label>
+      User: {{ post.user.firstName + " " + post.user.lastName | titlecase}}
+    </mat-label>
+    <hr />
+    <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()">
+      <mat-form-field class="inputs">
+        <mat-label>Description</mat-label>
+        <textarea
+          rows="10"
+          cols="400"
+          matInput
+          id="description"
+          placeholder="Description..."
+          class="form-control"
+          required
+        > {{ post.description }}
+      </textarea>
+        <mat-error> Description is <strong>required</strong> </mat-error>
+      </mat-form-field>
+      <button mat-button mat-dialog-close><mat-icon>undo</mat-icon>Back</button>
+      <button mat-button mat-dialog-close="false" type="submit">
+        <mat-icon>save_alt</mat-icon>Save changes
+      </button>
+    </form>
+  </div>
 </mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button mat-dialog-close mat-dialog-close="false">	<mat-icon>undo</mat-icon>Back</button>
-    <button mat-button mat-dialog-close mat-dialog-close="true"><mat-icon>save_alt</mat-icon>Save changes</button>
-</mat-dialog-actions>
+ -->
+
+<h2 mat-dialog-title>Edit Post Description.</h2>
+<mat-dialog-content style="width: 100%">
+  <div>
+    <mat-label>
+      User: {{ post.user.firstName + ' ' + post.user.lastName | titlecase}}
+    </mat-label>
+    <hr />
+    <label for="description"> description</label>
+    <form #description="ngForm" (ngSubmit)="editPost(description.value)">
+      <textarea ngModel name="description" cols="80" rows="10"> {{ post.description }}</textarea>
+      <button mat-button mat-dialog-close><mat-icon>undo</mat-icon>Back</button>
+      <button mat-button mat-dialog-close="false" type="submit">
+        <mat-icon>save_alt</mat-icon>Save changes
+      </button>
+    </form>  
+  </div>
+</mat-dialog-content>

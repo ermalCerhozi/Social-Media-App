@@ -5,6 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { NgToastService } from 'ng-angular-popup';
 import { AuthService } from 'src/app/services/auth.service';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -15,15 +16,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-  signUpForm: FormGroup = new FormGroup({});
   hide: boolean = true;
-  errorMessage = '';
+  signUpForm: FormGroup = new FormGroup({});
   firstName: string;
   lastName: string;
   email: string;
   password: string;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private router: Router, private toast: NgToastService) {
     this.firstName = '';
     this.lastName = '';
     this.email = '';
@@ -40,8 +40,7 @@ export class SignupComponent implements OnInit {
   }
 
   signUp() {
-    this.authService
-      .signUp({
+    this.authService.signUp({
         firstName: this.signUpForm.value.firstName,
         lastName: this.signUpForm.value.lastName,
         email: this.signUpForm.value.email,
@@ -50,19 +49,13 @@ export class SignupComponent implements OnInit {
       .pipe(
         tap(
           (res) => { 
-            localStorage.setItem('token', res.data.token)
-            localStorage.setItem('role', res.data.role);
-            this.router.navigate(['']);
+            localStorage.setItem('user', JSON.stringify(res.data))
+            this.router.navigate(['navigate/home']);
+            this.toast.success({detail:"SUCCESS",summary:"Account created successfully.",duration: 1500})
           },
           (error) => {
-            console.log(error.error.message);
-            this.errorMessage = error.error.message;
+            this.toast.error({detail:"ERROR",summary:"Double check your credentials.",duration: 1500})
           }
-        )
-      )
-      .subscribe((res) =>{
-        localStorage.setItem('user', JSON.stringify(res.data))
-        this.router.navigate(['']);
-       });
-  }
+        )).subscribe();
+    }
 }

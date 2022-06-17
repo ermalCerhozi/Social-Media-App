@@ -4,12 +4,20 @@ import {
   OnInit,
   Inject,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostService } from 'src/app/services/post.service';
 import { take } from 'rxjs/operators';
-import { Post } from 'src/app/services/models/post.model';
-import { ModelPost, ModelPosts } from 'src/app/services/models/postsModels';
+import {
+  Post,
+  PostEntity,
+  UserModel,
+} from 'src/app/services/models/post.model';
 
 @Component({
   selector: 'app-edit-posts',
@@ -18,27 +26,31 @@ import { ModelPost, ModelPosts } from 'src/app/services/models/postsModels';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditPostsComponent implements OnInit {
+  currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
+  description = new FormControl('');
+  editPostForm = new FormGroup({});
 
-  postForm = new FormGroup({
-    imageUrl: new FormControl(''),
-    description: new FormControl(''),
-  });
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public post: PostEntity<UserModel>,
+    private postService: PostService,
+    private fb: FormBuilder
+  ) {}
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: ModelPost, private postService: PostService) {}
-
-  ngOnInit(): void {
-    // this.editPost(this.id);
-    console.log(this.data);
-    
+  ngOnInit(): void {   
+    console.log(this.post);
+    this.editPostForm = this.fb.group({
+      description: [''],
+    });
   }
 
-  editPost(id: number, description:string) {
-    this.postService
-      .editPosts(id, description)
-      .pipe(take(1))
-      .subscribe((res) => {
-        console.log(res);
-      });
+  editPost(description: string) {
+    console.log(description, this.post.id);
+    this.postService.editPosts(this.post.id, description);
+  }
+
+  onSubmit() {
+    console.log(this.editPostForm.value);
+    this.editPost(this.editPostForm.value);
   }
 }

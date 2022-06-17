@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { tap,take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,7 @@ export class LoginComponent implements OnInit {
   };
   errorMessage: any;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService, private router: Router,     private toast: NgToastService) {}
 
   ngOnInit(): void {}
 
@@ -30,12 +31,12 @@ export class LoginComponent implements OnInit {
       .pipe(tap(
         (res) => {
           localStorage.setItem('user', JSON.stringify(res.data));
-          this.router.navigate(['']);
+          this.router.navigate(['navigate/home']);
+          this.toast.success({detail:"SUCCESS",summary:"You're logged in",duration: 1500})
         },
         (error) => {
-          const errorList = error.error.message;
-          this.errorMessage = errorList;
+          this.toast.error({detail:"ERROR",summary:"Email or password incorrect.",duration: 1500})
         }
-      ), take(1)).subscribe();
+      )).subscribe();
   }
 }

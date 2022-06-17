@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { user } from './services/models/comments.model';
 
 @Component({
   selector: 'app-root',

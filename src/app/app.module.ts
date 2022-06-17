@@ -9,7 +9,7 @@ import { AboutComponent } from './components/about/about.component';
 import { HelpComponent } from './components/help/help.component';
 import { HomeComponent } from './components/home/home.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ProfileComponent } from './components/profile/profile.component';
+import { ProfileComponent } from './components/home/profile/profile.component';
 import { MaterialModule } from './module/module.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -17,7 +17,8 @@ import { EditPostsComponent } from './components/home/edit-post/edit-posts.compo
 import { CommentsListComponent } from './components/home/comments-list/comments-list.component';
 import { LikesListComponent } from './components/home/likes-list/likes-list.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { NavigateComponent } from './components/navigate/navigate.component';
+import { NavigateComponent } from './components/home/navigate/navigate.component';
+import { NgToastModule } from 'ng-angular-popup'
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { NavigateComponent } from './components/navigate/navigate.component';
     ReactiveFormsModule,
     HttpClientModule,
     ScrollingModule,
+    NgToastModule,
     MaterialModule
   ],
   providers: [],

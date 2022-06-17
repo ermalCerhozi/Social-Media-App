@@ -5,11 +5,9 @@ import { take } from 'rxjs/operators';
 import { PostService } from 'src/app/services/post.service';
 import { CommentsListComponent } from './comments-list/comments-list.component';
 import { LikesListComponent } from './likes-list/likes-list.component';
-import { Post, PostCreate } from '../../services/models/post.model';
+import { CommentModel, Post, PostEntity, UserModel } from '../../services/models/post.model';
 import { EditPostsComponent } from './edit-post/edit-posts.component';
-import { CommentService } from 'src/app/services/comment.service';
-import { user } from 'src/app/services/models/comments.model';
-import { ModelPost, ModelPosts } from 'src/app/services/models/postsModels';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-home',
@@ -17,78 +15,73 @@ import { ModelPost, ModelPosts } from 'src/app/services/models/postsModels';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  loadedPosts: Post[] = [];
-  postForm: FormGroup= new FormGroup({});
-  commentForm: FormGroup= new FormGroup({});
-  likeUp= false;
+  loadedPosts: PostEntity<Post>[] = [];
 
-  currentUser: user = JSON.parse(localStorage.getItem('user')!)
+  postForm: FormGroup = new FormGroup({});
+  commentForm: FormGroup = new FormGroup({});
+  likeUp = false;
 
-  constructor( private postService: PostService, private dialog :MatDialog, private commentService: CommentService) {}
+  currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
+
+  constructor(private postService: PostService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getPosts();
   }
 
-  createPost(postData: PostCreate) {
-    this.postService
-    .createPosts(postData)
-    .pipe(take(1))
-    .subscribe((res) => {
-      this.getPosts();
-    });
-    this.postForm.reset()
-  } 
+  createPost(postData: Post) {
+    this.postService.createPosts(postData);
+    this.getPosts();
+  }
 
   getPosts() {
-    this.postService
-      .getPosts()
+    this.postService.getPosts()
       .pipe(take(1))
       .subscribe((res) => {
+        console.log(res);
         this.loadedPosts = res.data.list.reverse();
       });
   }
 
   deletePost(id: number) {
-    this.postService
-      .deletePosts(id)
-      .pipe(take(1))
-      .subscribe((res) => {
-        console.log(res);
-        this.getPosts();
-      });
+    this.postService.deletePosts(id);
+    this.getPosts();
   }
 
-
-  createComment(id: number, comment: string){
-    this.commentService.postComment(id,comment)
-    .pipe(take(1))
-    .subscribe();
-   }
-
-
-  openEditPostDialog(data: ModelPost){
-    let dialogRef = this.dialog.open(EditPostsComponent,{data} );
-    dialogRef.afterClosed().subscribe(result =>{
-      console.log(`Dialog Result ${result}`)
-    })
+  createComment(id: number, comment: string) {
+    this.postService.postComment(id, comment).pipe(take(1)).subscribe();
   }
 
-  openLikesListDialog(id : number){
-    let dialogRef = this.dialog.open(LikesListComponent, {panelClass: 'my-class'});
-    dialogRef.afterClosed().subscribe(result =>{
-      console.log(`Dialog Result ${result}`)
-    })
+  voteUp() {
+    this.likeUp = !this.likeUp;
   }
 
-  openCommentsListDialog(data: any){
-    let dialogRef = this.dialog.open(CommentsListComponent, {data});
-    dialogRef.afterClosed().subscribe(result =>{
-      console.log(`Dialog Result ${result}`)
-    })
+  openEditPostDialog(data: PostEntity<Post>) {
+    let dialogRef = this.dialog.open(EditPostsComponent, {
+      data,
+      panelClass: 'my-class',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog Result ${result}`);
+    });
   }
 
-  voteUp(){
-    this.likeUp= !this.likeUp;
+  openLikesListDialog(id: number) {
+    let dialogRef = this.dialog.open(LikesListComponent, {
+      panelClass: 'my-class',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog Result ${result}`);
+    });
+  }
+
+  openCommentsListDialog(data: PostEntity<CommentModel>) {
+    let dialogRef = this.dialog.open(CommentsListComponent, {
+      data,
+      panelClass: 'my-class',
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog Result ${result}`);
+    });
   }
 }

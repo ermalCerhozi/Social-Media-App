@@ -1,45 +1,39 @@
 import { HttpClient } from '@angular/common/http';
-import {  Component , Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CommentService } from 'src/app/services/comment.service';
 import { take } from 'rxjs/operators';
-import { Comments } from 'src/app/services/models/comments.model';
+import {
+  CommentModel,
+  Post,
+  PostEntity,
+  UserModel,
+} from 'src/app/services/models/post.model';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-comments-list',
   templateUrl: './comments-list.component.html',
-  styleUrls: ['./comments-list.component.css']
+  styleUrls: ['./comments-list.component.css'],
 })
 export class CommentsListComponent implements OnInit {
+  currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
-  loadedComments: Comments[] = [];
+  loadedComments: any[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private httpClient: HttpClient ,private commentService: CommentService) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public post: any,
+    private postService: PostService
+  ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
-    this.getComment();
-    
+    this.getComments();
+  }
+  
+  getComments(){
+    this.loadedComments= this.post.comments;
   }
 
-  getComment(){
-    this.commentService.getComments(this.data.id)
-    .pipe(take(1))
-    .subscribe((res) => {
-      this.loadedComments = res.data.list.reverse();
-      console.log(this.loadedComments)
-    });
+  deleteComment(commentId: number) {
+    this.postService.deleteComment(this.post.id, commentId);
   }
-
-  deleteComment(commentId: number){
-    this.commentService
-      .deleteComment(this.data.id, commentId)
-      .pipe(take(1))
-      .subscribe((res) => {
-        console.log(res);
-        this.getComment();
-      });
-  };
-
-
 }

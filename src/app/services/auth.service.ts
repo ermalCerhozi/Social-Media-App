@@ -3,27 +3,14 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ResponseModel, UserModel } from './models/post.model';
 
-interface ResponseModel<MODEL> {
-  data: MODEL;
-  result: any;
-}
-
-interface UserModel {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  token: string;
-  role: string;
-}
-
-interface AuthModel {
+interface SignInModel {
   email: string;
   password: string;
 }
 
-interface SignUpModel extends AuthModel {
+interface SignUpModel extends SignInModel {
   firstName: string;
   lastName: string;
 }
@@ -32,21 +19,23 @@ interface SignUpModel extends AuthModel {
   providedIn: 'root',
 })
 export class AuthService {
-  // [x: string]: any;
-
   private url: string;
 
   constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
     this.url = environment.baseUrl + '/auth';
   }
 
-  signIn(authModel: AuthModel): Observable<ResponseModel<UserModel>> {
-    return this.httpClient
-      .post<ResponseModel<UserModel>>(this.url + '/signIn', authModel);
-  } 
+  signIn(authModel: SignInModel): Observable<ResponseModel<UserModel>> {
+    return this.httpClient.post<ResponseModel<UserModel>>(
+      this.url + '/signIn',
+      authModel
+    );
+  }
 
   signUp(signUpModel: SignUpModel): Observable<ResponseModel<UserModel>> {
-    return this.httpClient
-      .post<ResponseModel<UserModel>>(this.url + '/signUp', signUpModel);
+    return this.httpClient.post<ResponseModel<UserModel>>(
+      this.url + '/signUp',
+      signUpModel
+    );
   }
 }
