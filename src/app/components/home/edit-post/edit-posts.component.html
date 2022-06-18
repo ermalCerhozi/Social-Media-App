@@ -1,48 +1,27 @@
-<!-- <h2 mat-dialog-title>Edit Post</h2>
+<h2 mat-dialog-title>Edit Post Description.</h2>
 <mat-dialog-content style="width: 100%">
   <div>
     <mat-label>
-      User: {{ post.user.firstName + " " + post.user.lastName | titlecase}}
+      User: {{ post.user.firstName + " " + post.user.lastName | titlecase }}
     </mat-label>
     <hr />
-    <form [formGroup]="editPostForm" (ngSubmit)="onSubmit()">
-      <mat-form-field class="inputs">
-        <mat-label>Description</mat-label>
-        <textarea
-          rows="10"
-          cols="400"
-          matInput
-          id="description"
-          placeholder="Description..."
-          class="form-control"
-          required
-        > {{ post.description }}
-      </textarea>
-        <mat-error> Description is <strong>required</strong> </mat-error>
-      </mat-form-field>
+    <label for="description">Description:</label>
+
+    <form [formGroup]="editPostForm" (ngSubmit)="editPost()" method="post">
+      <textarea
+        type="text"
+        class="form-control"
+        required
+        id="description"
+        formControlName="description"
+        cols="80"
+        rows="6"
+      >{{ post.description }}</textarea>
+
       <button mat-button mat-dialog-close><mat-icon>undo</mat-icon>Back</button>
       <button mat-button mat-dialog-close="false" type="submit">
         <mat-icon>save_alt</mat-icon>Save changes
       </button>
     </form>
-  </div>
-</mat-dialog-content>
- -->
-
-<h2 mat-dialog-title>Edit Post Description.</h2>
-<mat-dialog-content style="width: 100%">
-  <div>
-    <mat-label>
-      User: {{ post.user.firstName + ' ' + post.user.lastName | titlecase}}
-    </mat-label>
-    <hr />
-    <label for="description"> description</label>
-    <form #description="ngForm" (ngSubmit)="editPost(description.value)">
-      <textarea ngModel name="description" cols="80" rows="10"> {{ post.description }}</textarea>
-      <button mat-button mat-dialog-close><mat-icon>undo</mat-icon>Back</button>
-      <button mat-button mat-dialog-close="false" type="submit">
-        <mat-icon>save_alt</mat-icon>Save changes
-      </button>
-    </form>  
   </div>
 </mat-dialog-content>

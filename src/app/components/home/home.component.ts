@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { take } from 'rxjs/operators';
 import { PostService } from 'src/app/services/post.service';
@@ -17,21 +17,32 @@ import { CommonModule } from '@angular/common';
 export class HomeComponent implements OnInit {
   loadedPosts: PostEntity<Post>[] = [];
 
-  postForm: FormGroup = new FormGroup({});
-  commentForm: FormGroup = new FormGroup({});
+  postForm!: FormGroup;
+  commentForm!: FormGroup;
   likeUp = false;
 
   currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
-  constructor(private postService: PostService, private dialog: MatDialog) {}
+  constructor(private postService: PostService, private dialog: MatDialog, private fb : FormBuilder) {}
 
   ngOnInit(): void {
     this.getPosts();
+    this.postForm = this.fb.group({
+      description : ["", [Validators.required]],
+      imageUrl : ["", [Validators.required]],
+    }),
+    this.commentForm = this.fb.group({
+      comment : ["", [Validators.required]],
+    })
   }
 
-  createPost(postData: Post) {
-    this.postService.createPosts(postData);
-    this.getPosts();
+  createPost() {
+    this.postService.createPosts(this.postForm.value)
+    .pipe(take(1))
+    .subscribe((res) => {
+      this.getPosts();
+    });
+    this.postForm.reset();
   }
 
   getPosts() {
@@ -44,12 +55,21 @@ export class HomeComponent implements OnInit {
   }
 
   deletePost(id: number) {
-    this.postService.deletePosts(id);
-    this.getPosts();
+    this.postService.deletePosts(id)
+      .pipe(take(1))
+      .subscribe((res) => {
+        console.log(res);
+        this.getPosts();
+      });
   }
 
-  createComment(id: number, comment: string) {
-    this.postService.postComment(id, comment).pipe(take(1)).subscribe();
+  createComment(id: number) {
+    this.postService.postComment(id, this.commentForm.value)
+    .pipe(take(1))
+    .subscribe((res) =>{
+      this.commentForm.reset();
+      this.getPosts();
+    });
   }
 
   voteUp() {
@@ -57,29 +77,21 @@ export class HomeComponent implements OnInit {
   }
 
   openEditPostDialog(data: PostEntity<Post>) {
-    let dialogRef = this.dialog.open(EditPostsComponent, {
-      data,
-      panelClass: 'my-class',
-    });
+    let dialogRef = this.dialog.open(EditPostsComponent, {data, panelClass: 'my-class',});
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog Result ${result}`);
     });
   }
 
   openLikesListDialog(id: number) {
-    let dialogRef = this.dialog.open(LikesListComponent, {
-      panelClass: 'my-class',
-    });
+    let dialogRef = this.dialog.open(LikesListComponent,{panelClass:'my-class',});
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog Result ${result}`);
     });
   }
 
   openCommentsListDialog(data: PostEntity<CommentModel>) {
-    let dialogRef = this.dialog.open(CommentsListComponent, {
-      data,
-      panelClass: 'my-class',
-    });
+    let dialogRef = this.dialog.open(CommentsListComponent, {data,panelClass:'my-class',});
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog Result ${result}`);
     });

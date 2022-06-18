@@ -1,6 +1,6 @@
 <div class="container">
   <div class="bg-white p-3 mt-3 rounded border shadow">
-    <form #postForm="ngForm" (ngSubmit)="createPost(postForm.value)">
+    <form method="post" [formGroup]="postForm" (ngSubmit)="createPost()">
       <div class="row">
         <div class="col-1">
           <img class="avatar"
@@ -10,42 +10,36 @@
           />
         </div>
         <div class="col-8">
-          <div class="form-group">
             <input
+            type="text"
               class="form-control rounded-pill border-1 bg-gray pointer"
               id="description"
               required
-              ngModel
-              name="description"
+              formControlName="description"
               placeholder="What's on your mind?"
             />
-          </div>
         </div>
         <div class="col-2">
-          <button mat-raised-button color="primary"  class="postButton" type="submit"
+          <button mat-raised-button color="primary" type="submit"
           [disabled]="!postForm.valid"
           >	<mat-icon>send</mat-icon>Post</button>
         </div>
       </div>
-
       <div class="row" style="padding-top: 5px">
         <div class="col-1"></div>
         <div class="col-8">
-          <div class="form-group">
             <input
               type="text"
               class="form-control rounded-pill border-1 bg-gray pointer"
               id="imageUrl"
               required
-              ngModel
-              name="imageUrl"
               placeholder="Place an url image here."
-            />
-          </div>
+              formControlName="imageUrl"
+              />
+            </div>
         </div>
-      </div>
-    </form>
-
+      </form>
+      
     <hr />
 
     <div *ngIf="loadedPosts.length" >
@@ -106,19 +100,20 @@
                 </button>
               </div>
             </div>
+           
+            <!-- create comment form -->
             <form
-              #commentForm="ngForm"
-              (ngSubmit)="createComment(post.id, commentForm.value)"
+              [formGroup]="commentForm"
+              (ngSubmit)="createComment(post.id)"
             >
             <div class="row" style="padding-top: 5px;" >
               <div class="col-1"></div>
-                <div class="col-7 form-group">
+                <div class="col-7">
                     <input
                       class="form-control rounded-pill border-1 bg-gray pointer"
                       id="description"
                       required
-                      ngModel
-                      name="comment"
+                      formControlName="comment"
                       placeholder="Write a comment..."
                     />
                   </div>
@@ -134,3 +129,4 @@
     </cdk-virtual-scroll-viewport>
     </div>
   </div>
+

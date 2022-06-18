@@ -28,29 +28,24 @@ import {
 export class EditPostsComponent implements OnInit {
   currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
-  description = new FormControl('');
-  editPostForm = new FormGroup({});
+  editPostForm! : FormGroup;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public post: PostEntity<UserModel>,
-    private postService: PostService,
-    private fb: FormBuilder
+    private postService: PostService, private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {   
     console.log(this.post);
     this.editPostForm = this.fb.group({
-      description: [''],
+      description: ["", [Validators.required]],
     });
   }
 
-  editPost(description: string) {
-    console.log(description, this.post.id);
-    this.postService.editPosts(this.post.id, description);
-  }
-
-  onSubmit() {
-    console.log(this.editPostForm.value);
-    this.editPost(this.editPostForm.value);
+  editPost() {
+    console.log(this.editPostForm.value, this.post.id);
+    this.postService.editPosts(this.post.id, this.editPostForm.value)
+    .pipe(take(1))
+    .subscribe((res) => console.log(res));
   }
 }

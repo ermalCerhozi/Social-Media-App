@@ -29,7 +29,6 @@ const routes: Routes = [
     component: NavigateComponent,
     canActivate: [AuthGuardGuard],
     children:[
-      
       {
         path: 'home',
         component: HomeComponent,

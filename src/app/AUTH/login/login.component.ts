@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { tap,take } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgToastService } from 'ng-angular-popup';
 
@@ -10,24 +10,17 @@ import { NgToastService } from 'ng-angular-popup';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnInit {
-  hide = true;
-
-  // error: any;
-
+export class LoginComponent{
+  hide: boolean = true;
   form = {
     email: '',
     password: '',
   };
-  errorMessage: any;
 
-  constructor(private authService: AuthService, private router: Router,     private toast: NgToastService) {}
-
-  ngOnInit(): void {}
+  constructor(private authService: AuthService, private router: Router,  private toast: NgToastService) {}
 
   onSubmit(loginForm: NgForm) {
-    this.authService
-      .signIn(loginForm.value)
+    this.authService.signIn(loginForm.value)
       .pipe(tap(
         (res) => {
           localStorage.setItem('user', JSON.stringify(res.data));

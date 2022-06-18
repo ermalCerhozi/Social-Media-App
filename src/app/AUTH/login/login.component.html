@@ -1,17 +1,16 @@
-
 <div class="form-card">
   <mat-card class="mat-card">
     <mat-card-header class="header">
       <mat-card-title class="font-title-m">Log in</mat-card-title>
     </mat-card-header>
+
     <form class="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
       <mat-card-content class="content">
         <mat-form-field class="inputs">
           <mat-label>Email</mat-label>
           <input
-            type="text"
-            class="form-control"
             matInput
+            type="text"
             [(ngModel)]="form.email"
             name="email"
             required
@@ -34,8 +33,6 @@
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>

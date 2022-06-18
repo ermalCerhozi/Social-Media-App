@@ -17,35 +17,21 @@ import { Router } from '@angular/router';
 })
 export class SignupComponent implements OnInit {
   hide: boolean = true;
-  signUpForm: FormGroup = new FormGroup({});
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
+  signUpForm!: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router, private toast: NgToastService) {
-    this.firstName = '';
-    this.lastName = '';
-    this.email = '';
-    this.password = '';
-  }
+  constructor(private authService: AuthService, private router: Router, private toast: NgToastService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.signUpForm = new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      email: new FormControl(null, Validators.required),
-      password: new FormControl(null, Validators.required),
+    this.signUpForm =  this.fb.group({
+      firstName: ["", [Validators.required]],
+      lastName: ["", [Validators.required]],
+      email: ["", [Validators.required]],
+      password: ["", [Validators.required]],
     });
   }
 
   signUp() {
-    this.authService.signUp({
-        firstName: this.signUpForm.value.firstName,
-        lastName: this.signUpForm.value.lastName,
-        email: this.signUpForm.value.email,
-        password: this.signUpForm.value.password,
-      })
+    this.authService.signUp(this.signUpForm.value)
       .pipe(
         tap(
           (res) => { 

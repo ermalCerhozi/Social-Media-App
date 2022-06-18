@@ -9,7 +9,6 @@ import {
   ResponseModel,
   UserModel,
 } from './models/post.model';
-import { take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -28,40 +27,29 @@ export class PostService {
     imageUrl: string;
     noComment: boolean;
   }) {
-    return this.httpClient
-      .post(this.url, postData, { headers: this.httpHeaders })
-      .pipe(take(1))
-      .subscribe((res) => {
-        console.log(res);
-      });
+    return this.httpClient.post(this.url, postData, {
+      headers: this.httpHeaders,
+    });
   }
 
   getPosts() {
     return this.httpClient.get<ResponseModel<PageOf<PostEntity<Post>[]>>>(
-      this.url,
-      { headers: this.httpHeaders }
-    );
+      this.url,{ headers: this.httpHeaders });
   }
 
-  deletePosts(id: number) {
-    return this.httpClient
-      .delete<ResponseModel<PageOf<PostEntity<Post>[]>>>(this.url + `/${id}`, {
-        headers: this.httpHeaders,
-      })
-      .pipe(take(1))
-      .subscribe((res) => console.log(res));
-  }
-
-  // editPosts(request : <PostEntity<UserModel>>) {
   editPosts(id: number, description: string) {
     return this.httpClient
-      .put<PostEntity<UserModel>>(this.url + `/${id}`, description, {
-        headers: this.httpHeaders,
-      })
-      .pipe(take(1))
-      .subscribe((res) => console.log(res));
+    .put<PostEntity<UserModel>>(this.url + `/${id}`, description, {
+      headers: this.httpHeaders,
+    })
   }
-
+  
+  deletePosts(id: number) {
+    return this.httpClient.delete<ResponseModel<PageOf<PostEntity<Post>>>>(this.url + `/${id}`, {
+      headers: this.httpHeaders,
+    });
+  }
+  
   postComment(id: number, comment: string) {
     return this.httpClient.post(this.url + `/${id}/comment`, comment, {
       headers: this.httpHeaders,
@@ -74,13 +62,5 @@ export class PostService {
         this.url + `/${id}/comment/${commentId}`,
         { headers: this.httpHeaders }
       )
-      .pipe(take(1))
-      .subscribe((res) => {
-        console.log(res);
-      });
   }
-
-  // getComments(id: number) {
-  //   return this.httpClient.get<PostEntity<CommentModel>>(this.url + `/${id}/comment`);
-  // }
 }

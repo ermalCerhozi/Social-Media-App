@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { pipe } from 'rxjs';
 import { take } from 'rxjs/operators';
 import {
   CommentModel,
@@ -30,10 +31,16 @@ export class CommentsListComponent implements OnInit {
   }
   
   getComments(){
-    this.loadedComments= this.post.comments;
+    this.loadedComments= this.post.comments.reverse();
+    console.log(this.loadedComments);
   }
 
   deleteComment(commentId: number) {
-    this.postService.deleteComment(this.post.id, commentId);
+    this.postService.deleteComment(this.post.id, commentId)
+    .pipe(take(1))
+      .subscribe((res) => {
+        console.log(res);
+        this.getComments();
+      });
   }
 }

@@ -59,14 +59,14 @@
             minlength="6"
           />
           <mat-error> Password is <strong>required</strong> </mat-error>
-          <mat-error> Password must be at least <strong>6 caracters</strong> </mat-error>
+          <mat-error>
+            Password must be at least <strong>6 caracters</strong>
+          </mat-error>
           <button
             type="button"
             mat-icon-button
             matSuffix
             (click)="hide = !hide"
-            [attr.aria-label]="'Hide password'"
-            [attr.aria-pressed]="hide"
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
