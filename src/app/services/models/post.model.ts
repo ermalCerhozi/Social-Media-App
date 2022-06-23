@@ -49,7 +49,3 @@ export interface CommentModel {
   post: PostEntity<UserModel>;
   user: UserModel;
 }
-
-// export interface Omit {
-//  commnet :string;
-// }

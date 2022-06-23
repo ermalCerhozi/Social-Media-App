@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
@@ -14,7 +13,6 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PostService } from 'src/app/services/post.service';
 import { take } from 'rxjs/operators';
 import {
-  Post,
   PostEntity,
   UserModel,
 } from 'src/app/services/models/post.model';

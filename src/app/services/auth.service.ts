@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ResponseModel, UserModel } from './models/post.model';
 
-interface SignInModel {
+interface LogInModel {
   email: string;
   password: string;
 }
 
-interface SignUpModel extends SignInModel {
+interface SignUpModel extends LogInModel {
   firstName: string;
   lastName: string;
 }
@@ -19,23 +19,20 @@ interface SignUpModel extends SignInModel {
   providedIn: 'root',
 })
 export class AuthService {
-  private url: string;
+  url = environment.baseUrl + '/auth';
 
-  constructor(private httpClient: HttpClient, private snackBar: MatSnackBar) {
-    this.url = environment.baseUrl + '/auth';
-  }
+  constructor(private httpClient: HttpClient) {}
 
-  signIn(authModel: SignInModel): Observable<ResponseModel<UserModel>> {
+  logIn(logIn: LogInModel): Observable<ResponseModel<UserModel>> {
     return this.httpClient.post<ResponseModel<UserModel>>(
-      this.url + '/signIn',
-      authModel
+      this.url + '/signIn', logIn
     );
   }
 
-  signUp(signUpModel: SignUpModel): Observable<ResponseModel<UserModel>> {
+
+  signUp(signUp: SignUpModel): Observable<ResponseModel<UserModel>> {
     return this.httpClient.post<ResponseModel<UserModel>>(
-      this.url + '/signUp',
-      signUpModel
+      this.url + '/signUp', signUp
     );
   }
 }

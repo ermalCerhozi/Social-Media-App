@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
-  CommentModel,
   PageOf,
   Post,
   PostEntity,
@@ -27,7 +26,7 @@ export class PostService {
     imageUrl: string;
     noComment: boolean;
   }) {
-    return this.httpClient.post(this.url, postData, {
+    return this.httpClient.post<Post>(this.url, postData, {
       headers: this.httpHeaders,
     });
   }
@@ -39,28 +38,14 @@ export class PostService {
 
   editPosts(id: number, description: string) {
     return this.httpClient
-    .put<PostEntity<UserModel>>(this.url + `/${id}`, description, {
+    .put(this.url + `/${id}`, description, {
       headers: this.httpHeaders,
-    })
+    });
   }
   
   deletePosts(id: number) {
     return this.httpClient.delete<ResponseModel<PageOf<PostEntity<Post>>>>(this.url + `/${id}`, {
       headers: this.httpHeaders,
     });
-  }
-  
-  postComment(id: number, comment: string) {
-    return this.httpClient.post(this.url + `/${id}/comment`, comment, {
-      headers: this.httpHeaders,
-    });
-  }
-
-  deleteComment(id: number, commentId: number) {
-    return this.httpClient
-      .delete<ResponseModel<PageOf<PostEntity<CommentModel>[]>>>(
-        this.url + `/${id}/comment/${commentId}`,
-        { headers: this.httpHeaders }
-      )
   }
 }

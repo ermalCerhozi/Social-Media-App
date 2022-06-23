@@ -37,10 +37,10 @@ export class SignupComponent implements OnInit {
           (res) => { 
             localStorage.setItem('user', JSON.stringify(res.data))
             this.router.navigate(['navigate/home']);
-            this.toast.success({detail:"SUCCESS",summary:"Account created successfully.",duration: 1500})
+            this.toast.success({detail:"SUCCESS",summary:"Account created successfully.",duration: 2500})
           },
           (error) => {
-            this.toast.error({detail:"ERROR",summary:"Double check your credentials.",duration: 1500})
+            this.toast.error({detail:"ERROR",summary:"Double check your credentials.",duration: 2500})
           }
         )).subscribe();
     }

@@ -20,15 +20,15 @@ export class LoginComponent{
   constructor(private authService: AuthService, private router: Router,  private toast: NgToastService) {}
 
   onSubmit(loginForm: NgForm) {
-    this.authService.signIn(loginForm.value)
+    this.authService.logIn(loginForm.value)
       .pipe(tap(
         (res) => {
           localStorage.setItem('user', JSON.stringify(res.data));
           this.router.navigate(['navigate/home']);
-          this.toast.success({detail:"SUCCESS",summary:"You're logged in",duration: 1500})
+          this.toast.success({detail:"SUCCESS",summary:"You're logged in",duration: 2500})
         },
         (error) => {
-          this.toast.error({detail:"ERROR",summary:"Email or password incorrect.",duration: 1500})
+          this.toast.error({detail:"ERROR",summary:"Email or password incorrect.",duration: 2500})
         }
       )).subscribe();
   }

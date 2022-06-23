@@ -1,14 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { pipe } from 'rxjs';
 import { take } from 'rxjs/operators';
-import {
-  CommentModel,
-  Post,
-  PostEntity,
-  UserModel,
-} from 'src/app/services/models/post.model';
+import { CommentService } from 'src/app/services/comment.service';
+import { UserModel } from 'src/app/services/models/post.model';
 import { PostService } from 'src/app/services/post.service';
 
 @Component({
@@ -17,26 +11,29 @@ import { PostService } from 'src/app/services/post.service';
   styleUrls: ['./comments-list.component.css'],
 })
 export class CommentsListComponent implements OnInit {
+  
   currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
   loadedComments: any[] = [];
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public post: any,
-    private postService: PostService
+    private postService: PostService, private commentService : CommentService
   ) {}
+
 
   ngOnInit(): void {
     this.getComments();
+    console.log("hapet");
   }
   
   getComments(){
-    this.loadedComments= this.post.comments.reverse();
+    this.loadedComments= this.post.comments;
     console.log(this.loadedComments);
   }
 
   deleteComment(commentId: number) {
-    this.postService.deleteComment(this.post.id, commentId)
+    this.commentService.deleteComment(this.post.id, commentId)
     .pipe(take(1))
       .subscribe((res) => {
         console.log(res);

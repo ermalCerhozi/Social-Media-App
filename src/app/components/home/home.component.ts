@@ -7,7 +7,7 @@ import { CommentsListComponent } from './comments-list/comments-list.component';
 import { LikesListComponent } from './likes-list/likes-list.component';
 import { CommentModel, Post, PostEntity, UserModel } from '../../services/models/post.model';
 import { EditPostsComponent } from './edit-post/edit-posts.component';
-import { CommonModule } from '@angular/common';
+import { CommentService } from 'src/app/services/comment.service';
 
 @Component({
   selector: 'app-home',
@@ -23,25 +23,25 @@ export class HomeComponent implements OnInit {
 
   currentUser: UserModel = JSON.parse(localStorage.getItem('user')!);
 
-  constructor(private postService: PostService, private dialog: MatDialog, private fb : FormBuilder) {}
+  constructor(private postService: PostService, private commentService: CommentService, private dialog: MatDialog, private fb : FormBuilder) {}
 
   ngOnInit(): void {
     this.getPosts();
     this.postForm = this.fb.group({
-      description : ["", [Validators.required]],
-      imageUrl : ["", [Validators.required]],
+      description: ["", [Validators.required]],
+      imageUrl: ["", Validators.required],
     }),
     this.commentForm = this.fb.group({
-      comment : ["", [Validators.required]],
+      comment: ["", Validators.required],
     })
   }
 
   createPost() {
     this.postService.createPosts(this.postForm.value)
-    .pipe(take(1))
-    .subscribe((res) => {
-      this.getPosts();
-    });
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.getPosts();
+      });
     this.postForm.reset();
   }
 
@@ -49,7 +49,6 @@ export class HomeComponent implements OnInit {
     this.postService.getPosts()
       .pipe(take(1))
       .subscribe((res) => {
-        console.log(res);
         this.loadedPosts = res.data.list.reverse();
       });
   }
@@ -63,13 +62,13 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  createComment(id: number) {
-    this.postService.postComment(id, this.commentForm.value)
+  createComment(id: number ) {
+    this.commentService.postComment(id, this.commentForm.value)
     .pipe(take(1))
     .subscribe((res) =>{
-      this.commentForm.reset();
       this.getPosts();
     });
+    this.commentForm.reset();
   }
 
   voteUp() {
@@ -78,22 +77,25 @@ export class HomeComponent implements OnInit {
 
   openEditPostDialog(data: PostEntity<Post>) {
     let dialogRef = this.dialog.open(EditPostsComponent, {data, panelClass: 'my-class',});
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog Result ${result}`);
+    dialogRef.afterClosed()
+    .subscribe((res) => {
+      this.getPosts();
     });
   }
 
   openLikesListDialog(id: number) {
     let dialogRef = this.dialog.open(LikesListComponent,{panelClass:'my-class',});
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog Result ${result}`);
+    dialogRef.afterClosed()
+    .subscribe((res) => {
+      console.log(`Dialog Result ${res}`);
     });
   }
 
   openCommentsListDialog(data: PostEntity<CommentModel>) {
     let dialogRef = this.dialog.open(CommentsListComponent, {data,panelClass:'my-class',});
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog Result ${result}`);
+    dialogRef.afterClosed()
+    .subscribe((res) => {
+      this.getPosts();
     });
   }
 }
