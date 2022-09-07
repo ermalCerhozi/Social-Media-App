@@ -1,0 +1,35 @@
+<h2 mat-dialog-title>Post Overview</h2>
+<hr />
+<mat-dialog-content class="mat-typography">
+  <div class="d-flex justify-content-between align-items-center header">
+    <div class="d-flex align-items-center">
+      <img
+        src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+        class="profile-pic"
+      />
+      <div class="title">
+        <span>
+          <b>
+            {{ post.user.firstName + " " + post.user.lastName | titlecase }}
+          </b>
+        </span>
+      </div>
+    </div>
+  </div>
+  <p>{{ post.description }}</p>
+
+  <div class="row">
+    <div class="col-5">
+      <img src="{{ post.imageUrl }}" alt="" />
+    </div>
+    <div class="col-4">
+        <div *ngIf="post.noComment == false; else disabledMessage">
+            {{post.comments}}
+        </div>
+        <ng-template #disabledMessage>Comments are off.</ng-template>
+      </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+</mat-dialog-actions>

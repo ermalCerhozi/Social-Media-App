@@ -2,12 +2,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import {
+  EntirePost,
   PageOf,
   Post,
   PostEntity,
-  ResponseModel,
-  UserModel,
-} from './models/post.model';
+} from './interfaces/post.model';
+import { ResponseModel } from './interfaces/response.model';
+import { UserModel } from './interfaces/user.model';
+import { tap } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -32,15 +35,21 @@ export class PostService {
   }
 
   getPosts() {
-    return this.httpClient.get<ResponseModel<PageOf<PostEntity<Post>[]>>>(
-      this.url,{ headers: this.httpHeaders });
+    return this.httpClient
+    .get<ResponseModel<PageOf<PostEntity<UserModel>[]>>>
+    (this.url,{ headers: this.httpHeaders })
+    .pipe(
+      tap((resp) => {
+        // this.sortPostsPipe.transform(resp.data.list);  
+      })
+    );
   }
 
-  editPosts(id: number, description: string) {
+
+  editPosts(request: PostEntity<UserModel>) {
     return this.httpClient
-    .put(this.url + `/${id}`, description, {
-      headers: this.httpHeaders,
-    });
+      .put<PostEntity<UserModel>>(this.url + `/${request.id}`, request)
+      .subscribe((res) => console.log(res));
   }
   
   deletePosts(id: number) {

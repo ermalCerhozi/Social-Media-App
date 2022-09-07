@@ -1,0 +1,98 @@
+<mat-toolbar>
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+    <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+  </button>
+  I Chat
+  <div class="spacer"></div>
+  <button mat-button [matMenuTriggerFor]="Menu" class="right">
+    <img
+      class="avatar_right"
+      src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+    />
+    <h5>Hello {{currentUser.firstName + ' ' +  currentUser.lastName | titlecase}}!</h5>
+  </button>
+  <mat-menu #Menu="matMenu">
+    <button mat-menu-item [routerLink]="['profile']">
+      <mat-icon>person</mat-icon>
+      <span>My profile</span>
+    </button>
+    <button mat-menu-item (click)="Logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+    <img
+      class="avatar"
+      src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+    />
+
+    <h4 class="name">{{currentUser.firstName + ' '+  currentUser.lastName | titlecase}}</h4>
+    <h4 class="designation">Your informations with us are definitely secure</h4>
+
+    <mat-divider></mat-divider>
+
+    <button
+      mat-button
+      class="menu-button"
+      [routerLink]="['profile/', currentUser.id]"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon>person</mat-icon>
+      <span>Profile</span>
+    </button>
+
+    <button
+    *ngIf="isAdmin"
+    mat-button
+    class="menu-button"
+    [routerLink]="['admin']"
+    (click)="sidenav.toggle()"
+  >
+    <mat-icon>settings</mat-icon>
+    <span>Admin</span>
+  </button>
+
+    <button
+      mat-button
+      class="menu-button"
+      [routerLink]="['home']"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon>home</mat-icon>
+      <span>Home</span>
+    </button>
+
+    <button
+      mat-button
+      class="menu-button"
+      [routerLink]="['about']"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon>info</mat-icon>
+      <span>About</span>
+    </button>
+
+    <mat-divider></mat-divider>
+
+    <button
+      mat-button
+      class="menu-button"
+      [routerLink]="['help']"
+      (click)="sidenav.toggle()"
+    >
+      <mat-icon>help</mat-icon>
+      <span>Help</span>
+    </button>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z8">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

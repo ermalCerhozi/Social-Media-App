@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="d-flex align-items-center justify-content-center">
+        <div>
+            <img src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+            alt="" class="pic">
+        </div>
+        <div>
+            <h1>{{currentUser.firstName + ' ' +  currentUser.lastName | titlecase}}</h1>
+            <p> {{currentUser.email}} </p>
+            <!-- <p> {{'quote' | translate}}</p> -->
+        </div>
+    </div>
+    <hr>
+    <div class="d-flex justify-content-center">
+        <ul class="grid">
+            <div *ngFor="let post of loadedPosts" class="post">
+                <ng-container>
+                    <img src={{post.imageUrl}} alt="" class="postedPic" (click)="openDialog(post)">
+                </ng-container>
+            </div>
+        </ul>
+    </div>
+
+</div>
+

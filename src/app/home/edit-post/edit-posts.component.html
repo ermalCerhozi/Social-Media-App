@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>Edit Post Description.</h2>
+<mat-dialog-content style="width: 100%">
+  <div>
+    <mat-label>
+      User: {{ post.user.firstName + " " + post.user.lastName | titlecase }}
+    </mat-label>
+    <hr />
+    <label for="description">Description:</label>
+
+    <form [formGroup]="editedPost" (ngSubmit)="onSubmit()" method="put">
+      <input 
+      type="text"
+      class="form-control"
+      required
+      id="imageUrl"
+      formControlName="imageUrl">
+      <br>
+      <textarea
+        type="text"
+        class="form-control"
+        required
+        id="description"
+        formControlName="description"
+        cols="80"
+        rows="6"
+      >{{ post.description }}</textarea>
+
+      <button mat-button mat-dialog-close><mat-icon>undo</mat-icon>Back</button>
+      <button mat-button mat-dialog-close="false" type="submit">
+        <mat-icon>save_alt</mat-icon>Save changes
+      </button>
+    </form>
+  </div>
+</mat-dialog-content>

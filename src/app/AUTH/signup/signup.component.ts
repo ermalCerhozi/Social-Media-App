@@ -9,6 +9,7 @@ import { NgToastService } from 'ng-angular-popup';
 import { AuthService } from 'src/app/services/auth.service';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { passwordValidator } from './validators/passwordValidator';
 
 @Component({
   selector: 'app-signup',
@@ -26,22 +27,21 @@ export class SignupComponent implements OnInit {
       firstName: ["", [Validators.required]],
       lastName: ["", [Validators.required]],
       email: ["", [Validators.required]],
-      password: ["", [Validators.required]],
-    });
+      password: ["", [Validators.required, passwordValidator(/^(?=.*d)(?=.*[a-zA-Z]).{8,16}$/)]],    });
   }
 
   signUp() {
     this.authService.signUp(this.signUpForm.value)
-      .pipe(
-        tap(
-          (res) => { 
-            localStorage.setItem('user', JSON.stringify(res.data))
-            this.router.navigate(['navigate/home']);
-            this.toast.success({detail:"SUCCESS",summary:"Account created successfully.",duration: 2500})
-          },
-          (error) => {
-            this.toast.error({detail:"ERROR",summary:"Double check your credentials.",duration: 2500})
+    .subscribe(
+      (res) => {
+        this.router.navigate(['/home']);
+        localStorage.setItem('user', JSON.stringify(res.data));
+      },
+      (error) => {
+            this.toast.error({detail:"ERROR",summary:"Double check your credentials.",duration: 3000})
           }
-        )).subscribe();
+        )
+        this.signUpForm.reset();
     }
+
 }

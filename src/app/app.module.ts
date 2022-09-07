@@ -5,24 +5,27 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './AUTH/login/login.component';
 import { SignupComponent } from './AUTH/signup/signup.component';
-import { AboutComponent } from './components/about/about.component';
-import { HelpComponent } from './components/help/help.component';
-import { HomeComponent } from './components/home/home.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ProfileComponent } from './components/home/profile/profile.component';
-import { MaterialModule } from './module/module.module';
-import { HttpClientModule } from '@angular/common/http';
+import { HomeComponent } from './home/home.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ProfileComponent } from './profile/profile.component';
+import { MaterialModule } from './material/material.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EditPostsComponent } from './components/home/edit-post/edit-posts.component';
-import { CommentsListComponent } from './components/home/comments-list/comments-list.component';
-import { LikesListComponent } from './components/home/likes-list/likes-list.component';
+import { EditPostsComponent } from './home/edit-post/edit-posts.component';
+import { CommentsListComponent } from './home/comments-list/comments-list.component';
+import { LikesListComponent } from './home/likes-list/likes-list.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-import { NavigateComponent } from './components/home/navigate/navigate.component';
-import { NgToastModule } from 'ng-angular-popup'
+import { NavigateComponent } from './navigate/navigate.component';
+import { NgToastModule } from 'ng-angular-popup';
+import { AdminComponent } from './admin/admin.component'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AuthInterceptorInterceptor } from './services/auth-interceptor.interceptor';
+import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
+import { PostDialogComponent } from './profile/post-dialog/post-dialog.component';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ProfileComponent, AboutComponent, HelpComponent, NotFoundComponent, LoginComponent, SignupComponent, EditPostsComponent, CommentsListComponent, LikesListComponent, NavigateComponent],
+  declarations: [AppComponent, HomeComponent, ProfileComponent, NotFoundComponent, LoginComponent, SignupComponent, EditPostsComponent, CommentsListComponent, LikesListComponent, NavigateComponent, AdminComponent, ConfirmDialogComponent, PostDialogComponent],
   entryComponents: [ EditPostsComponent, CommentsListComponent, LikesListComponent],
   imports: [
     BrowserModule,
@@ -33,9 +36,12 @@ import { NgToastModule } from 'ng-angular-popup'
     HttpClientModule,
     ScrollingModule,
     NgToastModule,
+    MatAutocompleteModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [
+    // {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorInterceptor, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

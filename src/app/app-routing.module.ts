@@ -2,13 +2,13 @@ import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './AUTH/login/login.component';
 import { SignupComponent } from './AUTH/signup/signup.component';
-import { AboutComponent } from './components/about/about.component';
-import { HelpComponent } from './components/help/help.component';
-import { HomeComponent } from './components/home/home.component';
-import { NavigateComponent } from './components/home/navigate/navigate.component';
-import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ProfileComponent } from './components/home/profile/profile.component';
-import { AuthGuardGuard } from './services/guards/auth-guard.guard';
+import { HomeComponent } from './home/home.component';
+import { NavigateComponent } from './navigate/navigate.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { ProfileComponent } from './profile/profile.component';
+import { AuthGuardGuard } from './services/guards/auth.guard';
+import { AdminComponent } from './admin/admin.component';
+import { AdminGuard } from './services/guards/admin.guard';
 
 const routes: Routes = [
   {
@@ -35,26 +35,20 @@ const routes: Routes = [
         canActivate: [AuthGuardGuard],
       },
       {
-        path: 'profile',
+        path: 'profile/:id',
         component: ProfileComponent,
         canActivate: [AuthGuardGuard],
       },
       {
-        path: 'about',
-        component: AboutComponent,
-        canActivate: [AuthGuardGuard],
-      },
-      {
-        path: 'help',
-        component: HelpComponent,
-        canActivate: [AuthGuardGuard],
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AdminGuard],
       },
     ]
   },
   {
     path: '**',
     component: NotFoundComponent,
-    canActivate: [AuthGuardGuard],
   },
 ];
 @NgModule({

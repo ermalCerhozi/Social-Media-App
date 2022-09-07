@@ -1,0 +1,132 @@
+<div class="container">
+  <div class="bg-white p-3 mt-3 rounded border shadow">
+    <form method="post" [formGroup]="postForm" (ngSubmit)="createPost()">
+      <div class="row">
+        <div class="col-1">
+          <img class="avatar"
+            src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+            class="rounded-circle me-2"
+            style="width: 35px; height: 35px;"
+          />
+        </div>
+        <div class="col-8">
+            <input
+            type="text"
+              class="form-control rounded-pill border-1 bg-gray pointer"
+              id="description"
+              required
+              formControlName="description"
+              placeholder="What's on your mind?"
+            />
+        </div>
+        <div class="col-2">
+          <button mat-raised-button color="primary" type="submit"
+          [disabled]="!postForm.valid"
+          >	<mat-icon>send</mat-icon>Post</button>
+        </div>
+      </div>
+      <div class="row" style="padding-top: 5px">
+        <div class="col-1"></div>
+        <div class="col-8">
+            <input
+              type="text"
+              class="form-control rounded-pill border-1 bg-gray pointer"
+              id="imageUrl"
+              required
+              placeholder="Place an url image here."
+              formControlName="imageUrl"
+              />
+            </div>
+        </div>
+      </form>
+      
+    <hr />
+
+    <div *ngIf="loadedPosts.length" >
+      <cdk-virtual-scroll-viewport itemSize="loadedPosts.length" class="virtualScroll">
+        <div *cdkVirtualFor="let post of loadedPosts" class="posts">
+          <div class="bg-white p-4 rounded shadoww mt-3">
+            <div class="d-flex justify-content-between">
+              <div class="d-flex">
+                <img
+                src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-111_3.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=8ce2cd03f94f2baddcb332cfb50f78b9"
+                class="rounded-circle me-2"
+                style="width: 50px; height: 50px; object-fit: cover"
+              />
+              <div>
+                <p class="m-0 fw-bold">{{post.user.firstName + ' ' + post.user.lastName | titlecase}}</p>
+                <span class="text-muted fs-7">Recently Active</span>
+              </div>
+            </div>
+            <div *ngIf="post.user.id == currentUser.id">
+            <div class="dropdown">
+              <i class="dropbtn"> <mat-icon>more_horiz</mat-icon></i>
+              <div class="dropdown-content">
+                <a (click)="openEditPostDialog(post)">Edit</a>
+                <a (click)="confirm(post.id)">Delete</a>
+              </div>
+            </div>
+          </div>
+          </div>
+          <div class="mt-3">
+            <p>
+              {{ post.description }}
+            </p>
+            <img
+              src="https://source.unsplash.com/random/12"
+              class="img-fluid rounded"
+            />
+            <a class="m-o" (click)="openLikesListDialog(post.id)"
+              >See who liked this.
+            </a>
+            <div class="row" style="margin-top: 5px;">
+              <div class="col">
+                <button
+                  mat-stroked-button
+                  style="width: 100%"
+                  (click)="voteUp()"
+                  [ngClass]="{ blue: likeUp }"
+                >
+                  <mat-icon>thumb_up</mat-icon>Like
+                </button>
+              </div>
+              <div class="col">
+                <button
+                  mat-stroked-button
+                  style="width: 100%"
+                  (click)="openCommentsListDialog(post)"
+                >
+                  <mat-icon> chat_bubble</mat-icon>Comments
+                </button>
+              </div>
+            </div>
+           
+            <!-- Comment form -->
+            <form
+              [formGroup]="commentForm"
+              (ngSubmit)="createComment(post.id)"
+            >
+            <div class="row" style="padding-top: 5px;" >
+              <div class="col-1"></div>
+                <div class="col-7">
+                    <input
+                      class="form-control rounded-pill border-1 bg-gray pointer"
+                      id="description"
+                      required
+                      formControlName="comment"
+                      placeholder="Write a comment..."
+                    />
+                  </div>
+                  <div class="col-2">
+                  <button mat-raised-button color="primary" type="submit"
+                  [disabled]="!commentForm.valid">Comment</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </cdk-virtual-scroll-viewport>
+    </div>
+  </div>
+
